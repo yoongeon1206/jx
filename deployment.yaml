@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprintdemo-jx
+  labels:
+    app: sprintdemo-jx
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sprintdemo-jx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sprintdemo-jx
+    spec:
+      containers:
+      - image: 389216508719.dkr.ecr.ap-northeast-2.amazonaws.com/jx-client:latest
+        imagePullPolicy: Always
+        name: sprintdemo-jx
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+      - image: 389216508719.dkr.ecr.ap-northeast-2.amazonaws.com/jx-server:latest
+        imagePullPolicy: Always
+        name: sprintdemo-jx-server
+        ports:
+        - containerPort: 5000
+        protocol: TCP           
